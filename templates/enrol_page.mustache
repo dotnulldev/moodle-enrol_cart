@@ -1,0 +1,9 @@
+<div class="cart-enrol d-flex flex-column align-items-center py-3">
+    <div class="cart-enrol__price">{{#str}} price, enrol_cart {{/str}}: <b>{{price_string}}</b></div>
+    <div class="cart-enrol__btn mt-2">
+        <a class="btn btn-success btn-add-to-cart"
+           href="{{config.wwwroot}}/enrol/cart/do.php?action=add&instance={{instance_id}}">
+        <i class="fa fa-cart-plus"></i>{{#str}} add_to_cart, enrol_cart {{/str}}
+        </a>
+    </div>
+</div>

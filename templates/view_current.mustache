@@ -1,0 +1,44 @@
+<div class="cart-view--current">
+
+    <div class="cart-items">
+        {{#items}}
+            <div class="cart-item">
+                <div class="cart-item__row row">
+                    <div class="col-12 col-sm-3 col-lg-2">
+                        {{#course_image}}
+                            <a class="cart-item__image d-flex justify-content-sm-center"
+                               href="{{CFG.www}}/course/view.php?id={{course_id}}">
+                            <img class="img-responsive" src="{{course_image}}" alt="{{course_title}}"/>
+                            </a>
+                        {{/course_image}}
+                    </div>
+                    <div class="col-12 col-sm-9 col-lg-10">
+                        <h5 class="cart-item__title mt-2"><a href="{{CFG.www}}/course/view.php?id={{course_id}}
+                            ">{{course_title}}</a></h5>
+                        <div class="cart-item__price mt-1"><b>{{payable_string}}</b></div>
+                        <div class="cart-item__actions mt-3 small">
+                            <a href="{{CFG.www}}/enrol/cart/do.php?action=remove&instance={{instance_id}}">{{#str}}
+                            remove {{/str}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/items}}
+    </div>
+
+    <div class="cart-summary d-flex flex-column align-items-center py-3">
+        <div class="cart-summary__price"><b class="mr-1">{{#str}}
+            total, enrol_cart {{/str}}:</b><b>{{payable_string}}</b></div>
+        <div class="cart-summary__checkout mt-3">
+            <a class="btn btn-success" href="{{CFG.www}}/enrol/cart/checkout.php">
+                {{#cart.payable}}
+                    {{#str}} checkout, enrol_cart {{/str}}
+                {{/cart.payable}}
+                {{^cart.payable}}
+                    {{#str}} order_confirmation, enrol_cart {{/str}}
+                {{/cart.payable}}
+            </a>
+        </div>
+    </div>
+
+</div>
