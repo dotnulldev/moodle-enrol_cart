@@ -31,7 +31,7 @@ class service_provider implements \core_payment\local\callback\service_provider
                 ($cart->status == BaseCart::STATUS_CURRENT || $cart->status == BaseCart::STATUS_CHECKOUT)
             ) {
                 $cart->checkout();
-                return new payable($cart->payable, $cart->currency, $cart->paymentAccountId);
+                return new payable($cart->getPayable(), $cart->getCurrency(), $cart->paymentAccountId);
             }
         }
         return new payable(-1, '', -1);
