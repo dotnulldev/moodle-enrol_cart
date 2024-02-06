@@ -9,6 +9,7 @@
 
 namespace enrol_cart\utility;
 
+use context_course;
 use enrol_cart\object\Cart;
 use enrol_cart\object\CookieCart;
 use stdClass;
@@ -78,6 +79,36 @@ class CartHelper
     public static function hasInstance(int $instanceId): bool
     {
         return !!self::getInstance($instanceId);
+    }
+
+    /**
+     * Check if a user is enrolled in a specified instance.
+     *
+     * This method checks whether a user is enrolled in the specified instance.
+     *
+     * @param int $instanceId The ID of the enrolment instance.
+     * @param int $userId The ID of the user.
+     * @param bool $anyInstance (Optional) Whether to check enrollment in any instance of the course.
+     * @return bool Returns true if the user is enrolled, otherwise false.
+     */
+    public static function isUserEnrolled(int $instanceId, int $userId, bool $anyInstance = false): bool
+    {
+        global $DB;
+
+        // If anyInstance flag is set and the instance exists, check enrollment in the course
+        if ($anyInstance && self::hasInstance($instanceId)) {
+            $instance = self::getInstance($instanceId);
+            $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
+            $context = context_course::instance($course->id);
+            return is_enrolled($context, $userId); // Check enrollment in the course context
+        }
+
+        // Otherwise, check enrollment in the specified instance
+        return $DB->record_exists('user_enrolments', [
+            'enrolid' => $instanceId,
+            'userid' => $userId,
+            'status' => ENROL_USER_ACTIVE,
+        ]);
     }
 
     /**

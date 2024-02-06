@@ -58,3 +58,4 @@ $string['error_disabled'] = 'سبد خرید غیرفعال است.';
 
 $string['msg_delivered_successfully'] = 'ثبت نام شما در دوره (های) زیر با موفقیت انجام شد.';
 $string['msg_delivered_filed'] = 'در روند ثبت نام شما مشکلی پیش آمد.';
+$string['msg_already_enrolled'] = 'شما قبلا در این دوره ثبت نام کرده‌اید.';

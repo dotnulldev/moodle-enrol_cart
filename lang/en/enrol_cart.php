@@ -59,3 +59,4 @@ $string['error_disabled'] = 'The cart is disabled.';
 
 $string['msg_delivered_successfully'] = 'Your enrolment for the course(s) below has been successfully completed.';
 $string['msg_delivered_filed'] = 'There was a problem with your enrolment process.';
+$string['msg_already_enrolled'] = 'You have already enrolled for this course.';

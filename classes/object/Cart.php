@@ -9,6 +9,7 @@
 
 namespace enrol_cart\object;
 
+use core\notification;
 use dml_exception;
 use enrol_cart\utility\CartHelper;
 use Exception;
@@ -85,6 +86,8 @@ class Cart extends BaseCart
     /**
      * Add an item to the cart.
      *
+     * This method adds an enrolment instance to the shopping cart.
+     *
      * @param int $instanceId The ID of the enrolment instance to be added to the cart.
      * @return bool True if the item is successfully added, false otherwise.
      */
@@ -92,20 +95,30 @@ class Cart extends BaseCart
     {
         global $DB;
 
+        // Check if the user has permission to edit items in the cart, and the item does not already exist in the cart, and ensure the instance exists
         if ($this->canEditItems && !$this->hasItem($instanceId) && ($instance = CartHelper::getInstance($instanceId))) {
-            $item = (object) [
-                'cart_id' => $this->id,
-                'instance_id' => $instance->id,
-                'price' => $instance->cost,
-                'payable' => $instance->cost,
-            ];
-            if ($DB->insert_record('enrol_cart_items', $item)) {
-                $this->refresh();
-                return true;
+            // Ensure the user is not already enrolled in the instance
+            if (!CartHelper::isUserEnrolled($instanceId, $this->user_id, true)) {
+                // Create a new cart item object
+                $item = (object) [
+                    'cart_id' => $this->id,
+                    'instance_id' => $instance->id,
+                    'price' => $instance->cost,
+                    'payable' => $instance->cost,
+                ];
+                // Insert the item into the database
+                if ($DB->insert_record('enrol_cart_items', $item)) {
+                    // Refresh the cart data
+                    $this->refresh();
+                    return true; // Item added successfully
+                }
+            } else {
+                // User already enrolled
+                notification::success(get_string('msg_already_enrolled', 'enrol_cart'));
             }
         }
 
-        return false;
+        return false; // Item not added
     }
 
     /**
